@@ -1,0 +1,21 @@
+{
+  "name": "eloquent_javascript",
+  "version": "1.0.0",
+  "description": "Exercises from Eloquent Javascript book",
+  "main": "index.js",
+  "dependencies": {
+    "chai": "^4.1.2"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://githib.com/chrisjhh/eloquentjs.git"
+  },
+  "author": "Chris Hamer-Hodges",
+  "license": "ISC"
+}
