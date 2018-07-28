@@ -1,7 +1,7 @@
 const chai = require('chai');
 const expect = chai.expect;
 
-let obj = {here: {is: "an"}, object: 2};
+let obj = {here: {is: 'an'}, object: 2};
 
 const deepEqual = function(a,b) {
   if (a === b) return true;
@@ -33,7 +33,7 @@ describe('deepEqual', function() {
     expect(deepEqual(obj, {here: 1, object: 2})).to.be.false;
   });
   it('same deep values', function() {
-    expect(deepEqual(obj, {here: {is: "an"}, object: 2})).to.be.true;
+    expect(deepEqual(obj, {here: {is: 'an'}, object: 2})).to.be.true;
   });
 });
 
