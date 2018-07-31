@@ -21,7 +21,7 @@ class Vec {
    
 }
 
-describe.only('Objects', function() {
+describe('Objects', function() {
   describe('vector', function() {
     it('plus', function() {
       expect(new Vec(1,2).plus(new Vec(2,3)))
