@@ -1,5 +1,6 @@
 const chai = require('chai');
 const expect = chai.expect;
+const sinon = require('sinon');
 
 class Vec {
   constructor(x,y) {
@@ -49,6 +50,26 @@ class Group {
   }
 }
 
+class GroupIterator {
+  constructor(group) {
+    this.index = -1;
+    this.group = group;
+  }
+
+  next() {
+    ++this.index;
+    if (this.index >= this.group.contents.length) {
+      return {done: true};
+    }
+    const value = this.group.contents[this.index];
+    return {value, done: false};
+  }
+}
+
+Group.prototype[Symbol.iterator] = function() {
+  return new GroupIterator(this);
+};
+
 describe('Objects', function() {
   describe('vector', function() {
     it('plus', function() {
@@ -63,7 +84,7 @@ describe('Objects', function() {
       expect(new Vec(3,4).length).to.equal(5);
     });
   });
-  describe.only('group', function(){
+  describe('group', function(){
     it('constructor and has', function() {
       let group = Group.from([10, 20]);
       expect(group.has(10)).to.be.true;
@@ -74,6 +95,20 @@ describe('Objects', function() {
       group.add(10);
       group.delete(10);
       expect(group.has(10)).to.be.false;
+    });
+    it('should be iterable', function() {
+      const stub = sinon.stub(console, 'log');
+      try {
+        for (let value of Group.from(["a", "b", "c"])) {
+          console.log(value);
+        }
+      } finally {
+        stub.restore();
+      }
+      expect(stub.callCount).to.equal(3);
+      expect(stub.getCall(0).calledWith("a")).to.be.true;
+      expect(stub.getCall(1).calledWith("b")).to.be.true;
+      expect(stub.getCall(2).calledWith("c")).to.be.true;
     });
   });
 });
