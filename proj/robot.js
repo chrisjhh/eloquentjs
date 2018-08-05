@@ -47,3 +47,30 @@ async function compareRobots(name1, robot1, memory1, name2, robot2, memory2) {
   const winner = average1 < average2 ? name1 : name2;
   title.innerHTML = `${winner} is the winner!`;
 }
+
+function findRouteToAny(graph, from, destinations) {
+  let work = [{at: from, route: []}];
+  for (let i = 0; i < work.length; i++) {
+    let {at, route} = work[i];
+    for (let place of graph[at]) {
+      if (destinations.includes(place)) return route.concat(place);
+      if (!work.some(w => w.at == place)) {
+        work.push({at: place, route: route.concat(place)});
+      }
+    }
+  }
+}
+
+function pickUpDropOffRobot({place, parcels}, route) {
+  if (route.length == 0) {
+    let awaitingParcels = parcels.filter(p => p.place != place);
+    if (awaitingParcels.length > 0) {
+      let pickups = awaitingParcels.map(p => p.place);
+      route = findRouteToAny(roadGraph, place, pickups);
+    } else {
+      let destinations = parcels.map(p => p.address);
+      route = findRouteToAny(roadGraph, place, destinations);
+    }
+  }
+  return {direction: route[0], memory: route.slice(1)};
+}
