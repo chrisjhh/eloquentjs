@@ -74,3 +74,21 @@ function pickUpDropOffRobot({place, parcels}, route) {
   }
   return {direction: route[0], memory: route.slice(1)};
 }
+
+function closestGoalRobot({place, parcels}, route) {
+  if (route.length == 0) {
+    let awaitingParcels = parcels.filter(p => p.place != place);
+    if (awaitingParcels.length > 0) {
+      let goals = awaitingParcels.map(p => p.place);
+      heldParcels = parcels.filter(p => p.place == place);
+      if (heldParcels.length > 0) {
+        goals = goals.concat(heldParcels.map(p => p.address));
+      }
+      route = findRouteToAny(roadGraph, place, goals);
+    } else {
+      let destinations = parcels.map(p => p.address);
+      route = findRouteToAny(roadGraph, place, destinations);
+    }
+  }
+  return {direction: route[0], memory: route.slice(1)};
+}
