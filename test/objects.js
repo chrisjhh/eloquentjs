@@ -111,4 +111,11 @@ describe('Objects', function() {
       expect(stub.getCall(2).calledWith("c")).to.be.true;
     });
   });
+  describe('Borrowing a method', function() {
+    it('should work', function() {
+      let map = {one: true, two: true, hasOwnProperty: true};
+
+      expect(Object.prototype.hasOwnProperty.call(map,'one')).to.be.true;
+    });
+  });
 });
