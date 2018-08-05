@@ -23,14 +23,16 @@
   const speed = 2
 
   class Animation {
-    constructor(worldState, robot, robotState) {
+    constructor(worldState, robot, robotState, cb) {
       this.worldState = worldState
       this.robot = robot
       this.robotState = robotState
       this.turn = 0
+      this.cb = cb
 
-      let outer = (window.__sandbox ? window.__sandbox.output.div : document.body), doc = outer.ownerDocument
-      this.node = outer.appendChild(doc.createElement("div"))
+      let doc = document
+      this.node = document.getElementById("animate");
+      this.node.innerHTML = '';
       this.node.style.cssText = "position: relative; line-height: 0.1; margin-left: 10px"
       this.map = this.node.appendChild(doc.createElement("img"))
       this.map.src = "img/village2x.png"
@@ -97,6 +99,7 @@
         this.button.remove()
         this.text.textContent = ` Finished after ${this.turn} turns`
         this.robotElt.firstChild.src = "img/robot_idle2x.png"
+        if (this.cb) this.cb(this.turn);
       } else {
         this.schedule()
       }
@@ -120,9 +123,9 @@
     }
   }
 
-  window.runRobotAnimation = function(worldState, robot, robotState) {
+  window.runRobotAnimation = function(worldState, robot, robotState, cb) {
     if (active && active.timeout != null)
       clearTimeout(active.timeout)
-    active = new Animation(worldState, robot, robotState)
+    active = new Animation(worldState, robot, robotState, cb)
   }
 })()

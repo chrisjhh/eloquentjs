@@ -5,13 +5,15 @@
     <title>Robot deliveries</title>
     <script src="src/07_robot.js"></script>
     <script src="src/animatevillage.js"></script>
+    <script src="proj/robot.js"></script>
     <script>const doAnimation = () => {
-      runRobotAnimation(VillageState.random(),
-                    goalOrientedRobot, []);
+      compareRobots('Route Robot', routeRobot, [], 'Goal Oriented Robot', goalOrientedRobot, []);
+      //runRobotAnimation(VillageState.random(),
+      //              goalOrientedRobot, []);
     }</script>
   </head>
   <body onload="doAnimation()">
-    
+    <div id="animate">star</div>
   </body>
   
 </html>
