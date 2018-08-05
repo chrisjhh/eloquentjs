@@ -70,6 +70,34 @@ Group.prototype[Symbol.iterator] = function() {
   return new GroupIterator(this);
 };
 
+class PGroup {
+  constructor(contents) {
+    this.contents = contents;
+  }
+  has(value) {
+    return this.contents.includes(value);
+  }
+  add(value)  {
+    if (this.has(value)) {
+      return this;
+    }
+    return new PGroup(this.contents.concat(value));
+  }
+  delete(value) {
+    let i = this.contents.indexOf(value);
+    if (i === -1) {
+      return this;
+    }
+    return new PGroup(this.contents.slice(0,i)
+      .concat(this.contents.slice(i+1)));
+  }
+  
+}
+
+PGroup.empty = new PGroup([]);
+
+
+
 describe('Objects', function() {
   describe('vector', function() {
     it('plus', function() {
@@ -116,6 +144,20 @@ describe('Objects', function() {
       let map = {one: true, two: true, hasOwnProperty: true};
 
       expect(Object.prototype.hasOwnProperty.call(map,'one')).to.be.true;
+    });
+  });
+
+  describe('PGroup', function() {
+    it('Should work as expected', function() {
+      let a = PGroup.empty.add("a");
+      let ab = a.add("b");
+      let b = ab.delete("a");
+
+      expect(b.has("b")).to.be.true;
+      // → true
+      expect(a.has("b")).to.be.false;
+      // → false
+      expect(b.has("a")).to.be.false;
     });
   });
 });
